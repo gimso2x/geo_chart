@@ -3,11 +3,8 @@ import {
   Choropleth,
   ChoroplethCanvas,
 } from "@nivo/geo";
-import world from "@/geojson/world_countries.json";
-import gangdong from "@/geojson/gadong.json";
-import seoul from "@/geojson/seoul.json";
-import jeju from "@/geojson/jeju.json";
-import { getScaleAndProjection } from "./util";
+import { FeatureCollection, getScaleAndProjection } from "./util";
+import { useEffect, useState } from "react";
 
 const data = [
   {
@@ -23,20 +20,45 @@ const data = [
     value: 552972,
   },
 ];
-const MyResponsiveChoroplethCanvas = () => (
-  <div style={{ width: 500, height: 500 }}>
+
+const Canvas = ({
+  sido,
+  sig,
+}: {
+  sido: string | undefined;
+  sig: string | undefined;
+}) => {
+  const [features, setFeatures] = useState<FeatureCollection>();
+  const [message, SetMessage] = useState("Loading.....");
+
+  useEffect(() => {
+    const ab = async () => {
+      try {
+        const response = await import(`@/geojson/${sido}/${sig || sido}.json`);
+        const data = await response.default;
+        setFeatures(data);
+      } catch (error) {
+        setFeatures(undefined);
+        SetMessage("map json이 존재하지 않습니다.");
+        console.error(error);
+      }
+    };
+    sido && ab();
+  }, [sido, sig]);
+
+  return features ? (
     <ChoroplethCanvas
       width={500}
       height={500}
       data={data}
-      features={gangdong.features}
+      features={features?.features || []}
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       colors="RdBu"
       domain={[0, 1000000]}
       unknownColor="#101b42"
       label="properties.EMD_NM"
       valueFormat="0.02s"
-      {...getScaleAndProjection(gangdong, 500, 500)}
+      {...getScaleAndProjection(features, 500, 500)}
       enableGraticule={true}
       graticuleLineColor="rgba(0, 0, 0, .2)"
       // borderWidth={0.5}
@@ -57,7 +79,9 @@ const MyResponsiveChoroplethCanvas = () => (
       //   },
       // ]}
     />
-  </div>
-);
+  ) : (
+    <div>{message}</div>
+  );
+};
 
-export default MyResponsiveChoroplethCanvas;
+export default Canvas;

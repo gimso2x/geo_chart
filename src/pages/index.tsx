@@ -4,7 +4,7 @@ import sig from "@/services/api/sig";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
-const MyResponsiveChoroplethCanvas = dynamic(() => import("@/components/geo"), {
+const Canvas = dynamic(() => import("@/components/geo"), {
   ssr: false,
 });
 
@@ -14,19 +14,22 @@ const Index = () => {
   const [sidoList, setSidoList] = useState<APIResponseType[]>([]);
   const [sigList, setSigList] = useState<APIResponseType[]>([]);
 
+  // 1. 시도 import
   useEffect(() => {
     try {
-      sido().then((data) => setSidoList(data));
+      sido().then((data) => {
+        setSidoList(data);
+        setSidoValue(data[0].code);
+      });
     } catch (error) {
       console.error(error);
       throw new Error("error");
     }
   }, []);
 
+  // 2. 시군 import
   useEffect(() => {
-    if (sidoValue && sidoValue !== "false") {
-      console.log("sidoValue", sidoValue);
-      console.log(Boolean(sidoValue));
+    if (sidoValue) {
       try {
         sig(sidoValue).then((data) => {
           console.log("sig", data);
@@ -46,7 +49,6 @@ const Index = () => {
           value={sidoValue}
           onChange={(event) => setSidoValue(event.target.value)}
         >
-          <option value={"false"}>--- 선택 ---</option>
           {sidoList.map((sido) => (
             <option key={`sido${sido.code}`} value={sido.code}>
               {sido.name}
@@ -55,9 +57,13 @@ const Index = () => {
         </select>
         <select
           value={sigValue}
-          onChange={(event) => setSigValue(event.target.value)}
+          onChange={(event) =>
+            setSigValue(
+              isNaN(+event.target.value) ? undefined : event.target.value
+            )
+          }
         >
-          <option value={"false"}>--- 선택 ---</option>
+          <option>--- 선택 ---</option>
           {sigList.map((sig) => (
             <option key={`sig${sig.code}`} value={sig.code}>
               {sig.name}
@@ -65,7 +71,7 @@ const Index = () => {
           ))}
         </select>
       </div>
-      <MyResponsiveChoroplethCanvas />
+      <Canvas sido={sidoValue} sig={sigValue} />
     </div>
   );
 };
