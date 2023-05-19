@@ -8,15 +8,15 @@ import { useEffect, useState } from "react";
 
 const data = [
   {
-    id: "AFG",
+    id: "50130320",
     value: 556372,
   },
   {
-    id: "KOR",
-    value: 552972,
+    id: "48890440",
+    value: 55297211,
   },
   {
-    id: "11740110",
+    id: "48129153",
     value: 552972,
   },
 ];
