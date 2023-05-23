@@ -1,4 +1,3 @@
-import { APIResponseType } from "@/services/api/api";
 import sido from "@/services/api/sido";
 import sig from "@/services/api/sig";
 import dynamic from "next/dynamic";
@@ -7,6 +6,11 @@ import { useEffect, useState } from "react";
 const Canvas = dynamic(() => import("@/components/geo"), {
   ssr: false,
 });
+
+interface APIResponseType {
+  code: string;
+  name: string;
+}
 
 const Index = () => {
   const [sidoValue, setSidoValue] = useState<string>();
@@ -30,6 +34,7 @@ const Index = () => {
   // 2. 시군 import
   useEffect(() => {
     if (sidoValue) {
+      setSigValue(undefined);
       try {
         sig(sidoValue).then((data) => {
           console.log("sig", data);

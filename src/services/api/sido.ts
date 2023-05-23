@@ -1,15 +1,17 @@
-import { APIResponseType, API_URL } from "./api";
-
 const sido = async () => {
-  const response = await fetch(`${API_URL}?regcode_pattern=*00000000`);
-  const siDoData: { regcodes: APIResponseType[] } = await response.json();
+  const response = await fetch(
+    `/openApi/admCodeList.json?authkey=8349342c5fb7b32771547d`
+  );
+  const { admVOList } = await response.json();
 
-  return siDoData.regcodes.map((siDos: APIResponseType) => {
-    return {
-      code: siDos.code.substring(0, 2),
-      name: siDos.name,
-    };
-  });
+  return admVOList.admVOList.map(
+    (siDos: { admCode: string; admCodeNm: string }) => {
+      return {
+        code: siDos.admCode,
+        name: siDos.admCodeNm,
+      };
+    }
+  );
 };
 
 export default sido;

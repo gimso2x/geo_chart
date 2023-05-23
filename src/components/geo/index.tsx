@@ -55,14 +55,16 @@ const Canvas = ({
       margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
       colors="RdBu"
       domain={[0, 1000000]}
-      unknownColor="#101b42"
+      // unknownColor="#101b42"
+      // unknownColor="rgba(0,0,0,0.3)"
       label="properties.EMD_NM"
       valueFormat="0.02s"
       {...getScaleAndProjection(features, 500, 500)}
       enableGraticule={true}
-      graticuleLineColor="rgba(0, 0, 0, .2)"
-      // borderWidth={0.5}
+      graticuleLineColor="rgba(0, 0, 0)"
+      borderWidth={0.5}
       borderColor="#101b42"
+      // borderColor="#000"
       // legends={[
       //   {
       //     anchor: "bottom-left",
