@@ -1,6 +1,6 @@
 const sig = async (sidoCode: string) => {
   const response = await fetch(
-    `http://openapi.nsdi.go.kr/nsdi/eios/service/rest/AdmService/admSiList.json?authkey=f078764bc84268a4fb0ed3&admCode=${sidoCode}`
+    `https://gimso2x.github.io/geo_chart/openApi/admSiList.json?authkey=f078764bc84268a4fb0ed3&admCode=${sidoCode}`
   );
   const { admVOList } = await response.json();
 
