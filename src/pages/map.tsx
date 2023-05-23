@@ -4,12 +4,14 @@ import { Map, Polygon } from "react-kakao-maps-sdk";
 
 function MapHome() {
   const [data, setData] = useState<FeatureCollection>();
-  const sido = 50;
+  const sido = 11;
   const sig = undefined;
   useEffect(() => {
     const ab = async () => {
       try {
-        const response = await import(`@/geojson/${sido}/${sig || sido}.json`);
+        const response = await import(
+          `/public/geojson/${sido}/${sig || sido}.json`
+        );
         const data = await response.default;
         setData(data);
       } catch (error) {
@@ -29,7 +31,7 @@ function MapHome() {
       <Map
         center={handleCenter(data.bbox!)}
         style={{ width: "500px", height: "500px" }}
-        level={11}
+        level={9}
       >
         {data.features.map(
           (features, featuresIndex: Key) =>
