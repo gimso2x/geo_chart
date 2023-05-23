@@ -1,6 +1,6 @@
 const sido = async () => {
   const response = await fetch(
-    `openApi/admCodeList.json?authkey=8349342c5fb7b32771547d`
+    `http://openapi.nsdi.go.kr/nsdi/eios/service/rest/AdmService/admCodeList.json?authkey=8349342c5fb7b32771547d`
   );
   const { admVOList } = await response.json();
 
