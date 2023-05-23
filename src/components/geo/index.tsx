@@ -34,7 +34,9 @@ const Canvas = ({
   useEffect(() => {
     const ab = async () => {
       try {
-        const response = await import(`@/geojson/${sido}/${sig || sido}.json`);
+        const response = await import(
+          `public/geojson/${sido}/${sig || sido}.json`
+        );
         const data = await response.default;
         setFeatures(data);
       } catch (error) {
