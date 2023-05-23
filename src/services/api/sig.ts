@@ -1,6 +1,6 @@
 const sig = async (sidoCode: string) => {
   const response = await fetch(
-    `/openApi/admSiList.json?authkey=f078764bc84268a4fb0ed3&admCode=${sidoCode}`
+    `openApi/admSiList.json?authkey=f078764bc84268a4fb0ed3&admCode=${sidoCode}`
   );
   const { admVOList } = await response.json();
 
